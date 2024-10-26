@@ -12,16 +12,18 @@
         <input type="submit" value="Enviar" style="display: none;">
     </form>
 
+    <div id="resultado" style="display: none;"></div>
+
     <script>
         const totalPerguntas = 29;
         const totalAlternativas = 6;
         const perguntas = document.getElementById('perguntas');
         const btnProxima = document.getElementById('btnProxima');
         const submitBtn = document.querySelector('input[type="submit"]');
+        const resultadoDiv = document.getElementById('resultado');
         let perguntaAtual = 1;
         let soma = 0;
 
-        // Perguntas com pontuação invertida
         const perguntasInvertidas = [1, 5, 6, 10, 13, 14, 19, 23, 24, 27, 28, 29];
         const alt = ["Discordo completamente","Discordo moderadamente","Discordo minimamente","Concordo minimamente","Concordo moderadamente","Concordo completamente"]
         const per = ["Eu não me sinto particularmente satisfeito com o jeito que sou",
@@ -56,7 +58,7 @@
         function exibirPergunta() {
             perguntas.innerHTML = '';
             const divPergunta = document.createElement('div');
-            divPergunta.innerHTML = `<p>${per[perguntaAtual]}</p>`;
+            divPergunta.innerHTML = `<p>${per[perguntaAtual-1]}</p>`;
 
             for (let j = 1; j <= totalAlternativas; j++) {
                 divPergunta.innerHTML += `
@@ -79,6 +81,20 @@
             return radios ? parseInt(radios.value) : null;
         }
 
+        function exibirResultado() {
+            const resultado = soma / totalPerguntas;
+            if(resultado <2){
+                resultadoDiv.innerHTML = `<h1> Não sou feliz</h1> 
+                                         <p>Se você respondeu honestamente e obteve esse score 
+baixo, recomendamos que procure observar seu estilo de 
+vida e procure ajuda profissional para compreender melhor 
+esses sentimentos e estabelecer uma avaliação mais 
+apurada desse momento.</P>`
+            }
+            resultadoDiv.innerHTML = `<p>Resultado da pesquisa: ${resultado.toFixed(2)}</p>`;
+            resultadoDiv.style.display = 'block';
+        }
+
         btnProxima.addEventListener('click', () => {
             const valor = obterValorSelecionado();
             if (valor !== null) {
@@ -95,6 +111,7 @@
                 } else {
                     btnProxima.style.display = 'none';
                     submitBtn.style.display = 'block';
+                    exibirResultado();
                 }
             } else {
                 alert('Por favor, selecione uma alternativa.');
@@ -105,4 +122,3 @@
     </script>
 </body>
 </html>
-
