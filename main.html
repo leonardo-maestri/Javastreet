@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário</title>
+</head>
+<body>
+    <form id="formulario">
+        <div id="perguntas"></div>
+        <button type="button" id="btnProxima">Próxima</button>
+        <input type="submit" value="Enviar" style="display: none;">
+    </form>
+
+    <script>
+        const totalPerguntas = 29;
+        const totalAlternativas = 6;
+        const perguntas = document.getElementById('perguntas');
+        const btnProxima = document.getElementById('btnProxima');
+        const submitBtn = document.querySelector('input[type="submit"]');
+        let perguntaAtual = 1;
+        let soma = 0;
+
+        function exibirPergunta() {
+            perguntas.innerHTML = '';
+            const divPergunta = document.createElement('div');
+            divPergunta.innerHTML = `<p>Pergunta ${perguntaAtual}</p>`;
+
+            for (let j = 1; j <= totalAlternativas; j++) {
+                divPergunta.innerHTML += `
+                    <label>
+                        <input type="radio" name="pergunta${perguntaAtual}" value="${j}">
+                        Alternativa ${j}
+                    </label><br>
+                `;
+            }
+
+            perguntas.appendChild(divPergunta);
+        }
+
+        function obterValorSelecionado() {
+            const radios = document.querySelector(`input[name="pergunta${perguntaAtual}"]:checked`);
+            return radios ? parseInt(radios.value) : null;
+        }
+
+        btnProxima.addEventListener('click', () => {
+            const valor = obterValorSelecionado();
+            if (valor !== null) {
+                soma += valor;
+                console.log('Soma atual:', soma);
+
+                if (perguntaAtual < totalPerguntas) {
+                    perguntaAtual++;
+                    exibirPergunta();
+                } else {
+                    btnProxima.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                }
+            } else {
+                alert('Por favor, selecione uma alternativa.');
+            }
+        });
+
+        exibirPergunta();
+    </script>
+</body>
+</html>
