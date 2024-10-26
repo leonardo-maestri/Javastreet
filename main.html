@@ -13,6 +13,7 @@
     </form>
 
     <div id="resultado" style="display: none;"></div>
+    <div id = "txt" style="display:none;"></div>
 
     <script>
         const totalPerguntas = 29;
@@ -21,6 +22,7 @@
         const btnProxima = document.getElementById('btnProxima');
         const submitBtn = document.querySelector('input[type="submit"]');
         const resultadoDiv = document.getElementById('resultado');
+        const txtDiv = document.getElementById("txt");
         let perguntaAtual = 1;
         let soma = 0;
 
@@ -83,14 +85,29 @@
 
         function exibirResultado() {
             const resultado = soma / totalPerguntas;
-            if(resultado <2){
-                resultadoDiv.innerHTML = `<h1> Não sou feliz</h1> 
+            if(resultado <3){
+                txtDiv.innerHTML = `<h1> Não sou feliz</h1> 
                                          <p>Se você respondeu honestamente e obteve esse score 
 baixo, recomendamos que procure observar seu estilo de 
 vida e procure ajuda profissional para compreender melhor 
 esses sentimentos e estabelecer uma avaliação mais 
 apurada desse momento.</P>`
             }
+            if(resultado >=3 && resultado<5){
+                txtDiv.innerHTML = `<h1> Moderadamente feliz</h1>
+                <p>Um score entre 3 e 5 pode ser uma média numérica exata 
+de suas respostas de felicidade e infelicidade. Fortaleça, 
+ainda mais, estes sentimentos com estilo de vida saudável, 
+alimentação, laser, trabalho, atividades físicas e relações 
+humanas afetivas e próximas, para se tornar uma pessoa 
+ainda mais feliz.</p>`
+            }
+            if(resultado>=5&&resultado<6){
+                txtDiv.innerHTML = `<h1>Muito feliz<h1>
+                    <p>qualidade dos relacionamentos e desempenho acadêmico 
+e profissional</p>`
+            }
+            txtDiv.style.display = 'block';
             resultadoDiv.innerHTML = `<p>Resultado da pesquisa: ${resultado.toFixed(2)}</p>`;
             resultadoDiv.style.display = 'block';
         }
