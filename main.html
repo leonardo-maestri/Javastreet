@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário</title>
+</head>
+<body>
+    <form id="formulario">
+        <div id="perguntas"></div>
+        <button type="button" id="btnProxima">Próxima</button>
+        <input type="submit" value="Enviar" style="display: none;">
+    </form>
+
+    <script>
+        const totalPerguntas = 29;
+        const totalAlternativas = 6;
+        const perguntas = document.getElementById('perguntas');
+        const btnProxima = document.getElementById('btnProxima');
+        const submitBtn = document.querySelector('input[type="submit"]');
+        let perguntaAtual = 1;
+        let soma = 0;
+
+        // Perguntas com pontuação invertida
+        const perguntasInvertidas = [1, 5, 6, 10, 13, 14, 19, 23, 24, 27, 28, 29];
+        const alt = ["Discordo completamente","Discordo moderadamente","Discordo minimamente","Concordo minimamente","Concordo moderadamente","Concordo completamente"]
+        const per = ["Eu não me sinto particularmente satisfeito com o jeito que sou",
+"Sou uma pessoa muito interessada em outras pessoas",
+"Sinto que a vida é muito gratificante",
+"Tenho sentimentos muito afetivos em relação a quase todos",
+"Raramente acordo me sentindo cansado",
+"Eu não estou, particularmente, otimista em relação ao futuro",
+"Sinto que a maioria das minhas experiências são divertidas",
+"Estou sempre comprometido e envolvido com várias iniciativas",
+"A vida é boa",
+"Eu não acho que o mundo seja um bom lugar para viver",
+"Eu me encontro, sempre sorrindo muito",
+"Estou bem satisfeito com tudo em minha vida",
+"Eu não me sinto uma pessoa atraente",
+"Existe uma lacuna entre o que gostaria de fazer e o que faço",
+"Estou muito feliz",
+"Eu encontro beleza e harmonia nas coisas",
+"Sempre consigo provocar alegria nas pessoas",
+"Sempre encontro tempo para tudo que quero realizar",
+"Sinto que não tenho controle da minha vida",
+"Sinto-me capaz de levar diversas iniciativas adiante",
+"Eu me considero uma pessoa mentalmente alerta",
+"Muitas vezes me sinto experimentando alegria e euforia",
+"Sinto que não é fácil tomar decisões, em várias situações",
+"Sinto não ter um significado e propósito em minha vida",
+"Sinto que tenho um nivel elevado de energia",
+"Eu geralmente, exerço uma boa influência sobre os acontecimentos",
+"Não costumo me divertir com outras pessoas",
+"Não me sinto, particularmente, uma pessoa saudável",
+"Não tenho, particularmente, lembranças felizes do meu passado"]
+        function exibirPergunta() {
+            perguntas.innerHTML = '';
+            const divPergunta = document.createElement('div');
+            divPergunta.innerHTML = `<p>${per[perguntaAtual]}</p>`;
+
+            for (let j = 1; j <= totalAlternativas; j++) {
+                divPergunta.innerHTML += `
+                    <label>
+                        <input type="radio" name="pergunta${perguntaAtual}" value="${j}">
+                        ${alt[j-1]}
+                    </label><br>
+                `;
+            }
+
+            perguntas.appendChild(divPergunta);
+        }
+
+        function obterValorInvertido(valor) {
+            return totalAlternativas + 1 - valor;
+        }
+
+        function obterValorSelecionado() {
+            const radios = document.querySelector(`input[name="pergunta${perguntaAtual}"]:checked`);
+            return radios ? parseInt(radios.value) : null;
+        }
+
+        btnProxima.addEventListener('click', () => {
+            const valor = obterValorSelecionado();
+            if (valor !== null) {
+                if (perguntasInvertidas.includes(perguntaAtual)) {
+                    soma += obterValorInvertido(valor);
+                } else {
+                    soma += valor;
+                }
+                console.log('Soma atual:', soma);
+
+                if (perguntaAtual < totalPerguntas) {
+                    perguntaAtual++;
+                    exibirPergunta();
+                } else {
+                    btnProxima.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                }
+            } else {
+                alert('Por favor, selecione uma alternativa.');
+            }
+        });
+
+        exibirPergunta();
+    </script>
+</body>
+</html>
+
