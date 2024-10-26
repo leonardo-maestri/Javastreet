@@ -122,7 +122,7 @@ e profissional</p>`
                     soma += valor;
                 }
                 console.log('Soma atual:', soma);
-
+                localStorage.setItem(`resposta${perguntaAtual}`,valor);
                 if (perguntaAtual < totalPerguntas) {
                     perguntaAtual++;
                     exibirPergunta();
